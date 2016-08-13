@@ -1,9 +1,12 @@
 package weekendhacks.com.kahahaibosedk;
 
+
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -47,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
         String phoneNumber = phoneManager.getLine1Number();
         TextView text = (TextView)findViewById(R.id.textView);
         text.setText(phoneNumber);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isRegistered = preferences.contains(getString(R.string.is_registered));
+        if(!isRegistered){
+            //Nishants code
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(getString(R.string.is_registered),true);
+            editor.apply();
+        }
     }
 
     @Override
