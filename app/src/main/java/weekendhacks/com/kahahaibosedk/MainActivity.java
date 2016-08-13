@@ -1,5 +1,7 @@
 package weekendhacks.com.kahahaibosedk;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +13,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isRegistered = preferences.contains(getString(R.string.is_registered));
+        if(!isRegistered){
+            //Nishants code
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(getString(R.string.is_registered),true);
+            editor.apply();
+        }
     }
 
     @Override
