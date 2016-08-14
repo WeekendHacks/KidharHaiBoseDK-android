@@ -8,4 +8,6 @@
     <string name="name">name</string>
     <string name="fcm_id">fcm_id</string>
     <string name="phone">phone</string>
+    <string name="phone_no">phone_no</string>
+    <string name="register">Register</string>
 </resources>

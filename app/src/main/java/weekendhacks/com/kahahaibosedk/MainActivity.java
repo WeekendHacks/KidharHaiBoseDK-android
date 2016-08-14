@@ -3,6 +3,7 @@ package weekendhacks.com.kahahaibosedk;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.os.AsyncTask;
@@ -16,8 +17,12 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
@@ -39,6 +44,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyFirebaseIIDService";
@@ -49,27 +63,44 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        mContactView = (ListView) findViewById(R.id.contactList);
 
-        mUser = new ArrayList<>();
-        mContactAdapter = new ContactAdapter(this,R.layout.contact_item, mUser);
-
-        mContactView.setAdapter(mContactAdapter);
-        givePermissions(this);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isRegistered = preferences.contains(getString(R.string.is_registered));
-        if(!isRegistered) {
+        if (!isRegistered) {
+            Intent intent = new Intent(this, RegisterActivity.class);
+            startActivity(intent);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(getString(R.string.is_registered), true);
             editor.apply();
         }
-        GetContacts contactsTask = new GetContacts();
-        contactsTask.execute();
-        Log.d(TAG, "I have been called here");
+        String phone_no = preferences.getString(getString(R.string.phone_no), null);
+        if (phone_no != null) {
+            final String my_phone_no = phone_no;
+            setContentView(R.layout.activity_main);
+            mContactView = (ListView) findViewById(R.id.contactList);
 
+            mUser = new ArrayList<>();
+            mContactAdapter = new ContactAdapter(this, R.layout.contact_item, mUser);
+            mContactView.setAdapter(mContactAdapter);
+            mContactView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View v,
+                                        int position, long id) {
+                    User user = mUser.get(position);
+                    String url = "https://khb.herokuapp.com/request";
+                    String urlParameters = "to=" + user.getPhone() + "&from=" + my_phone_no;
+                    new SendToken().execute(url, urlParameters);
+                }
+            });
+
+            String url = getString(R.string.app_server_url) + "users?phone=" + phone_no;
+            GetContacts contactsTask = new GetContacts();
+            contactsTask.execute(url);
+            Log.d(TAG, "I have been called here");
+
+        }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -92,44 +123,17 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private boolean givePermissions(Activity activity) {
-        if (ContextCompat.checkSelfPermission(activity,
-                android.Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                    android.Manifest.permission.READ_PHONE_STATE)) {
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{android.Manifest.permission.READ_PHONE_STATE},
-                        1);
-            }
-        }
-        return true;
-    }
-
-    public class GetContacts extends AsyncTask<Void,Void,Integer> {
+    public class GetContacts extends AsyncTask<String,Void,Integer> {
 
         private final String LOG_TAG = GetContacts.class.getSimpleName();
         @Override
-        protected Integer doInBackground(Void ... Params) {
+        protected Integer doInBackground(String ... params) {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
             String contactsJsonStr = null;
 
-            Utility utility = new Utility();
-            String phoneNumber = utility.getPhoneNumber(getApplicationContext());
-            String baseUrl = getString(R.string.app_server_url)+"users?phone="+phoneNumber;
+            String baseUrl = params[0];
 
             try {
                 URL url = new URL(baseUrl);

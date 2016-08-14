@@ -75,6 +75,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         mNotifyMgr.notify(mNotificationId, mBuilder.build());
     }
     private void sendLocation(String messageBody) {
-
     }
 }
