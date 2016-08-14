@@ -138,6 +138,7 @@
     <orderEntry type="library" exported="" name="appcompat-v7-24.1.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-config-9.4.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-basement-9.4.0" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.7" level="project" />
     <orderEntry type="library" exported="" name="play-services-tasks-9.4.0" level="project" />
     <orderEntry type="library" exported="" name="firebase-database-connection-9.4.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-24.1.1" level="project" />

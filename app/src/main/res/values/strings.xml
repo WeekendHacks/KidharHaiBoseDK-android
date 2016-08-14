@@ -4,4 +4,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="is_registered">is_registered</string>
+    <string name="app_server_url">http://khb.herokuapp.com/</string>
+    <string name="name">name</string>
+    <string name="fcm_id">fcm_id</string>
+    <string name="phone">phone</string>
 </resources>

@@ -23,9 +23,9 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     private void sendRegistrationToServer(String token) {
         // TODO: Implement this method to send token to your app server
-        Utility utility = new Utility();
-        String phoneNumber = utility.getPhoneNumber(getApplicationContext());
-        Log.d(TAG,phoneNumber);
+//        Utility utility = new Utility();
+//        String phoneNumber = utility.getPhoneNumber(getApplicationContext());
+//        Log.d(TAG,phoneNumber);
     }
 }
 
