@@ -20,11 +20,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Utility utility = new Utility();
+        String phoneNumber = utility.getPhoneNumber(getApplicationContext(), this);
+        TextView text = (TextView)findViewById(R.id.textView);
+        text.setText(phoneNumber);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isRegistered = preferences.contains(getString(R.string.is_registered));
         if(!isRegistered){
-            //Nishants code
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(getString(R.string.is_registered),true);
             editor.apply();
