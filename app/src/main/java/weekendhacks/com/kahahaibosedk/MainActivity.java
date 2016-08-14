@@ -4,6 +4,7 @@ package weekendhacks.com.kahahaibosedk;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.content.SharedPreferences;
@@ -14,8 +15,20 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,17 +37,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        givePermissions(this);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isRegistered = preferences.contains(getString(R.string.is_registered));
-        if(!isRegistered) {
+        //if(!isRegistered) {
+            setContentView(R.layout.activity_main);
+            final Button button = (Button) findViewById(R.id.button);
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Perform action on click
+                    new SendToken().execute(MyFirebaseInstanceIDService.getToken(), "", "");
+                }
+            });
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(getString(R.string.is_registered), true);
             editor.apply();
-        }
-        Log.d(TAG, "I have been called here");
+    //    } else {
+
+    //    }
 
     }
 
@@ -60,28 +80,32 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private boolean givePermissions(Activity activity) {
-        if (ContextCompat.checkSelfPermission(activity,
-                android.Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED) {
+    private class SendToken extends AsyncTask<String, Void, Void> {
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                    android.Manifest.permission.READ_PHONE_STATE)) {
+        @Override
+        protected Void doInBackground(String... params) {
 
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+            try {
+                String url = "https://khb.herokuapp.com/register";
+                URL obj = new URL(url);
+                HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{android.Manifest.permission.READ_PHONE_STATE},
-                        1);
+                //add reuqest header
+                con.setRequestMethod("POST");
+                String urlParameters = "name=TeriMaaTakli&phone=5307461414&fcm_id="+params[0];
+                // Send post request
+                con.setDoOutput(true);
+                con.connect();
+                DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+                wr.writeBytes(urlParameters);
+                wr.flush();
+                wr.close();
+                Log.d("Response Code is", Integer.toString(con.getResponseCode()));
+            } catch (IOException e) {
+                e.printStackTrace();
+                //Log.d("Response Code is", "Error");
             }
+            return null;
         }
-        return true;
     }
 }
