@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "173462766406",
+    "firebase_url": "https://com-kahahaibosedk.firebaseio.com",
+    "project_id": "com-kahahaibosedk",
+    "storage_bucket": "com-kahahaibosedk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173462766406:android:af0f92686cc565be",
+        "android_client_info": {
+          "package_name": "com.kahahaibosedk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "173462766406-6rgi648jc662hvbaedonn7o3pa6cou3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKHtFzQ_scYgyK-DRRib_JCBlTjWwgPmM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
