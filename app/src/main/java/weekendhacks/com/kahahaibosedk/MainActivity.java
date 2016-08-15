@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -24,6 +25,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -59,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<User> mUser;
     private ListView mContactView;
     private ContactAdapter mContactAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
             GetContacts contactsTask = new GetContacts();
             contactsTask.execute(url);
             Log.d(TAG, "I have been called here");
-
         }
     }
     @Override
