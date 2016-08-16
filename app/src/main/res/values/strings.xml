@@ -11,4 +11,5 @@
     <string name="phone_no">phone_no</string>
     <string name="register">Register</string>
     <string name="no_location_detected">No Location Detected</string>
+    <string name="register_number">Enter Mobile Number:</string>
 </resources>

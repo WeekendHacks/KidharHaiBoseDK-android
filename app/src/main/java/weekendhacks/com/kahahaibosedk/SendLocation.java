@@ -58,8 +58,11 @@ public class SendLocation extends AppCompatActivity implements GoogleApiClient.C
         // applications that do not require a fine-grained location and that do not need location
         // updates. Gets the best and most recent location currently available, which may be null
         // in rare cases when a location is not available.
-
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            String permission = "android.permission.WRITE_EXTERNAL_STORAGE";
+            int res = getApplicationContext().checkCallingOrSelfPermission(permission);
+            if(res == PackageManager.PERMISSION_GRANTED) {
+                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            }
         if (mLastLocation != null) {
             mLatitude= String.valueOf(mLastLocation.getLatitude());
             mLongitude= String.valueOf(mLastLocation.getLongitude());

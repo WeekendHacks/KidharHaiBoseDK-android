@@ -5,8 +5,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
-    android:drawable="@color/abc_tint_edittext">
+    android:drawable="@color/abc_tint_edittext"
+    android:visibility="visible"
+    android:outlineProvider="bounds">
     <EditText
+        android:background="@drawable/outline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="phone"
@@ -14,7 +17,6 @@
         android:id="@+id/editText"
         android:layout_marginTop="219dp"
         android:layout_alignParentTop="true"
-        android:gravity="center"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:elegantTextHeight="true"
@@ -22,34 +24,34 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:singleLine="false"
-        android:textStyle="bold"
-        android:translationZ="@dimen/activity_horizontal_margin"
         android:scrollIndicators="start"
-        android:textSize="20dp"
-        />
+        android:textSize="42sp"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Register your Number:"
-        android:id="@+id/textView"
-        android:layout_alignBottom="@+id/editText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="64dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginBottom="77dp"
-        android:height="@dimen/abc_text_size_headline_material" />
+        android:gravity="left" />
 
     <Button
+
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register"
         android:id="@+id/button"
+        android:layout_marginTop="61dp"
         android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="99dp"
-        />
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/register_number"
+        android:gravity="center"
+        android:id="@+id/textView"
+        android:layout_alignBottom="@+id/editText"
+        android:layout_marginBottom="86dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<User> mUser;
     private ListView mContactView;
     private ContactAdapter mContactAdapter;
-
+    public Integer REGISTER_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +77,8 @@ public class MainActivity extends AppCompatActivity {
         boolean isRegistered = preferences.contains(getString(R.string.is_registered));
         if (!isRegistered) {
             Intent intent = new Intent(this, RegisterActivity.class);
-            startActivity(intent);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(getString(R.string.is_registered), true);
-            editor.apply();
+            startActivityForResult(intent, REGISTER_CODE);
+
         }
         String phone_no = preferences.getString(getString(R.string.phone_no), null);
         if (phone_no != null) {
@@ -107,6 +105,20 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "I have been called here");
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == this.REGISTER_CODE) {
+            if(resultCode == RESULT_OK) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean(getString(R.string.is_registered), true);
+                editor.apply();
+            }
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
